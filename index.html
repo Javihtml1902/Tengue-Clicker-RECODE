@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tengue clicker RECODE</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+      body{
+        background: linear-gradient(#2e2e2e, #141414);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: #cecece;
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+      .textoSmall {
+        font-size: 15px;
+        font-family: DM Sans;
+        font-weight: 800;
+        animation: splashText 0.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes splashText {
+      0% {
+        transform: scale(1);
+        }
+      100% {
+        transform: scale(1.15);
+      }
+          }
+
+      h1{
+        font-family: DM Sans;
+        font-weight: 1000;
+        font-size: 38px;
+        text-align: center;
+      }
+
+      .juegoPrincipal, .displays, .utilityContainer {
+        font-family: Poppins;
+        text-align: left;
+        margin: 0;
+        padding: 20px;
+        border: #b1b0b0 solid 2px;
+        border-radius: 8px;
+        color: #b9b8b8;
+        font-weight: 600;
+        box-shadow: #b1b0b041 10px 8px;
+        box-sizing: border-box;
+      }
+
+    /* Contenedor principal que pone la izquierda y la derecha lado a lado */
+.main-layout {
+    display: flex;
+    flex-wrap: wrap; /* Permitir que bajen en pantallas pequeñas */
+    gap: 20px; /* Espacio entre la sección izquierda y derecha */
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+/* Sección izquierda */
+.juegoPrincipal {
+    flex: 1 1 280px; /* Ancho base adaptable */
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Sección derecha */
+.displays {
+    flex: 1 1 280px; /* Ancho base adaptable */
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Contenedor inferior para los botones de abajo */
+.utilityContainer {
+    display: flex;
+    flex-wrap: wrap; /* Permitir que los botones bajen si no caben */
+    justify-content: center; /* Centra los botones horizontalmente */
+    align-items: center;
+    gap: 15px; /* Espacio entre los botones */
+    width: 100%; /* Ocupa todo el ancho disponible pero respetando márgenes */
+    max-width: 100%;
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.btn{
+  background: #444343;
+  padding: 12px 20px;
+  color: #cecece;
+  border: rgb(165, 165, 165) solid 2px;
+  border-radius: 9px;
+  margin: 5px;
+  font-family: DM Sans;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+.btn:active {
+  background-color: rgb(136, 136, 136);
+}
+#rebirthBtn {
+  background: linear-gradient(#3e4444, #6d7271);
+  transition: all 0.4s ease;
+}
+
+.display{
+  font-size: clamp(35px, 8vw, 50px); /* Tamaño fluido responsive */
+  word-break: break-all;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <header class="title">
+      <h1 class="textTitle">
+        tengue clicker
+        <p class="textoSmall">recode</p>
+      </h1>
+    </header>
+<div class="main-layout">
+    <div class="juegoPrincipal">
+      <button class="botonPrincipal" id="btn">tengue</button>
+      <p class="puntaje">Puntaje: <br /><span class="display" id="puntajeDisplay">0</span></p></div>
+    <div class="displays">
+      <p class="multDisp">
+        Tu tienes <br /><span class="display" id="multiplierDisplay">1</span><br />
+        tengues/click
+      </p>
+      <p>
+        Tu tienes <br /><span class="display" id="prestigeDisplay">0</span><br />
+        tenguenario/s
+      </p>
+      <p>
+        Tu has revivido <br /><span class="display" id="rebirthDisplay">0</span><br />
+        veces
+      </p>
+    </div></div>
+    <div class="utilityContainer">
+      <button class="btn" id="prestigeBtn">Convertir tenguenarios</button>
+      <button class="btn" id="rebirthBtn">
+        Ascender --- <span id="prestigeRebirth">15</span> tenguenarios
+      </button>
+    </div>
+    <script>
+      let puntajeMultiplier = 1;
+      let puntajeReal = 0;
+      let prestige = 0;
+      let rebirthCounter = 0
+
+      let puntajeDisplay = document.getElementById("puntajeDisplay");
+      let puntajeMultiplierDisp = document.getElementById("multiplierDisplay");
+      let prestigeDisplay = document.getElementById("prestigeDisplay");
+      let btn = document.getElementById("btn");
+      let prestigeForRebirthDisplay = document.getElementById("prestigeRebirth");
+      let rebirthCounterDisplay = document.getElementById("rebirthDisplay")
+      
+      // Matemáticas balanceadas desde cero
+      let prestigeForRebirth = 15;
+      let restaTenguePorTenguenario = 15;
+      let LIMITE_PRESTIGIO = 50;
+
+      const prestigeBtn = document.getElementById("prestigeBtn");
+      const rebirthBtn = document.getElementById("rebirthBtn");
+
+      displayMultiplier();
+      displayPrestige();
+      displayPrestigeRebirth();
+
+      function displayMultiplier() {
+        puntajeMultiplierDisp.innerHTML = Math.floor(puntajeMultiplier);
+      }
+
+      function displayTengues() {
+        puntajeDisplay.innerHTML = Math.floor(puntajeReal);
+      }
+
+      function displayPrestige() {
+        prestigeDisplay.innerHTML = Math.floor(prestige);
+      }
+
+      function displayPrestigeRebirth() {
+        prestigeForRebirthDisplay.innerHTML = prestigeForRebirth;
+      }
+
+      function displayRebirthCounter(){
+        rebirthCounterDisplay.innerHTML = rebirthCounter
+      }
+
+      // 1. CLIC PRINCIPAL: Progresión controlada y sin saturación
+      btn.addEventListener("click", function () {
+        puntajeReal += puntajeMultiplier;
+
+        // Bucle controlado para manejar clics grandes sin regalar recursos de forma rota
+        while (puntajeReal >= LIMITE_PRESTIGIO) {
+          prestige += 1;
+          puntajeReal -= restaTenguePorTenguenario;
+          LIMITE_PRESTIGIO += 35; // Incremento fijo y constante para mantener el reto
+        }
+
+        displayMultiplier();
+        displayPrestige();
+        displayTengues();
+        displayRebirthCounter();
+      });
+
+      // 2. CONVERTIR TENGUENARIOS: Recompensa justa para mejorar el multiplicador
+      prestigeBtn.addEventListener("click", function () {
+        if (prestige > 0) {
+          puntajeMultiplier += prestige; // Cada tenguenario suma +1 al multiplicador base
+          prestige = 0;
+          displayMultiplier();
+          displayPrestige();
+          displayTengues();
+          displayRebirthCounter();
+        } else {
+          alert("¡No tienes tenguenarios para convertir!");
+        }
+      });
+
+      // 3. ASCENDER (REBIRTH): Multiplicador masivo de poder con costo progresivo
+      rebirthBtn.addEventListener("click", function () {
+        if (prestige >= prestigeForRebirth) {
+          puntajeMultiplier *= 2; // Duplica tu poder global
+          prestige -= prestigeForRebirth; // Resta los tenguenarios usados
+          prestigeForRebirth *= 2; // El siguiente ascenso pide 10 más
+          restaTenguePorTenguenario += 5; // Ajuste leve en la dificultad de conversión
+          rebirthCounter += 1;
+        } else {
+          let faltantes = prestigeForRebirth - prestige;
+          alert(`Te faltan ${faltantes} tenguenarios para poder ascender.`);
+        }
+        displayMultiplier();
+        displayPrestige();
+        displayTengues();
+        displayPrestigeRebirth();
+        displayRebirthCounter();
+      });
+    </script>
+  </body>
+</html>
