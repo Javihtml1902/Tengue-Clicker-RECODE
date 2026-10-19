@@ -161,8 +161,8 @@
         transform: scale(0.97);
       }
 
-      /* TIENDA (ESTILO ORIGINAL) */
-      #rebirthMenu {
+      /* TIENDA Y GUÍA (ESTILO IDÉNTICO DE DIALOG) */
+      #rebirthMenu, #guideMenu {
         position: relative;
         padding: 20px;
         border: #a1a1a1 solid 2px;
@@ -172,14 +172,20 @@
         font-family: 'DM Sans', sans-serif;
         font-weight: 700;
         color: #cacaca;
-        text-shadow: 0 0px 10px #1a1a1a;
+        box-sizing: border-box;
       }
 
-      #rebirthMenu[open] {
+      #guideMenu {
+        max-width: 580px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      #rebirthMenu[open], #guideMenu[open] {
         animation: tiendaApareciendo 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
-      #rebirthMenu.cerrando {
+      #rebirthMenu.cerrando, #guideMenu.cerrando {
         animation: tiendaDesapareciendo 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
       }
 
@@ -235,8 +241,8 @@
         background: linear-gradient(130deg, #7e7e7e, #4d4d4d);
       }
 
-      /* BOTÓN CERRAR CON DISEÑO RETENIDO */
-      #closeMenuBtn {
+      /* BOTONES CERRAR MODALES (ESTILO IDÉNTICO) */
+      #closeMenuBtn, #guideClose {
         background: rgba(255, 255, 255, 0.08);
         border: #888 solid 1.5px;
         border-radius: 50%;
@@ -255,12 +261,12 @@
         transition: transform 0.2s ease, background 0.2s ease;
       }
 
-      #closeMenuBtn:hover {
+      #closeMenuBtn:hover, #guideClose:hover {
         transform: scale(1.1);
         background: rgba(255, 255, 255, 0.18);
       }
 
-      .btn, .btnPrincipal, .btnTiendaNormal, #closeMenuBtn {
+      .btn, .btnPrincipal, .btnTiendaNormal, #closeMenuBtn, #guideClose, #guideBtn {
         -webkit-user-select: none; 
         -moz-user-select: none;    
         -ms-user-select: none;     
@@ -274,6 +280,73 @@
         color: #a8b2b1;
         margin: 2px 0 10px 4px;
         text-shadow: none;
+      }
+
+      /* SECCIÓN FOOTER & BOTÓN GUÍA */
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #3d3d3d;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 14px;
+        color: #9e9e9e;
+      }
+
+      #guideBtn {
+        background: #444343;
+        padding: 12px;
+        color: #cecece;
+        border: rgb(165, 165, 165) solid 2px;
+        box-shadow: 3px 3px 8px #313131b4;
+        border-radius: 8px;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        margin-left: 8px;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      #guideBtn:hover {
+        transform: scale(1.04);
+        background: linear-gradient(130deg, #7e7e7e, #4d4d4d);
+      }
+
+      /* CONTENIDO DE LA GUÍA FORMATO TIENDA */
+      .guideContent {
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        line-height: 1.5;
+        font-size: 14px;
+        color: #cacaca;
+      }
+
+      .guideContent h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #e0e0e0;
+        margin-top: 16px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 4px;
+      }
+
+      .guideContent ul {
+        margin: 6px 0;
+        padding-left: 20px;
+      }
+
+      .guideContent li {
+        margin-bottom: 6px;
+      }
+
+      .guideHighlight {
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 10px 14px;
+        border-radius: 8px;
+        margin-top: 14px;
+        font-size: 13px;
       }
     </style>
   </head>
@@ -327,11 +400,45 @@
       </div>
     </div>
 
+    <footer class="footer">
+      <p>¿No entendiste el juego? <button id="guideBtn">Guía Completa Tengue Clicker</button></p>
+    </footer>
+
+    <dialog id="guideMenu">
+      <h2 class="subtitle" style="margin-top: 0; padding-right: 35px;"> Guía de Juego </h2>
+      <button id="guideClose">✕</button>
+
+      <div class="guideContent">
+        <p>El objetivo principal es acumular la mayor cantidad de <strong>tengues/click</strong> mediante clics, conversión de tenguenarios y ascensiones para desbloquear mejoras en la tienda.</p>
+
+        <h3>1. Mecánicas Principales</h3>
+        <ul>
+          <li><strong> Clic Principal (tengue):</strong> Cada clic te da puntos según tu valor de <em>tengues/click</em>.</li>
+          <li><strong> Auto-conversión:</strong> Al alcanzar el límite de puntos, se convierte automáticamente en <strong>+1 Tenguenario</strong> (aumentando +65 puntos el siguiente límite).</li>
+          <li><strong> Convertir Tenguenarios:</strong> Consume todos tus tenguenarios para sumarlos directamente a tu multiplicador base.</li>
+          <li><strong> Ascender (Rebirth):</strong> Al juntar los tenguenarios requeridos (inicia en 30):
+            <ul>
+              <li>Multiplica x2 tu poder por clic.</li>
+              <li>Consigues <strong>+1 Ascensión</strong> para la tienda.</li>
+              <li>Reinicia tus puntos a 0 y aumenta el costo de la siguiente ascensión (x1.5).</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>2. La Tienda</h3>
+        <p>Con tus ascensiones puedes comprar mejoras como <strong>Comprar Noli</strong>, la cual calcula tu poder actual y te otorga un aumento masivo proporcional (~50% adicional).</p>
+
+        <div class="guideHighlight">
+          💡 <strong>Estrategia Rápida:</strong> Clica para acumular tenguenarios ➔ Conviértelos seguido para elevar el multiplicador ➔ Junta tenguenarios para Ascender ➔ Compra mejoras en la tienda.
+        </div>
+      </div>
+    </dialog>
+
     <script>
       // Variables 
       let puntajeMultiplier = 1;
       let puntajeReal = 0;
-      let prestige = 99; 
+      let prestige = 0; 
       let rebirthCounter = 0;
       let precioNoliAjustable = 1;
 
@@ -344,6 +451,9 @@
       let rebirthCounterDisplay = document.getElementById("rebirthDisplay");
       let closeMenuBtn = document.getElementById("closeMenuBtn");
       let rebirthMenu = document.getElementById("rebirthMenu");
+      let guideMenu = document.getElementById("guideMenu");
+      let guideBtn = document.getElementById("guideBtn");
+      let guideClose = document.getElementById("guideClose");
       let rebirthDisplayModal = document.getElementById("rebirthDisplayModal");
       let mejoraNoliAjustableDisplay = document.getElementById("mejoraNoliBalanceada");
       let precioNoliAjustableDisplay = document.getElementById("precioNoliAjustable");
@@ -480,7 +590,7 @@
         }
       });
 
-      // CERRAR MODAL CON ANIMACIÓN
+      // CERRAR MODAL DE TIENDA CON ANIMACIÓN
       closeMenuBtn.addEventListener("click", function(){
         rebirthMenu.classList.add('cerrando');
 
@@ -498,6 +608,26 @@
           }
         });
       });
+
+      // ABRIR Y CERRAR MODAL DE GUÍA CON ANIMACIÓN
+      guideBtn.addEventListener("click", function(){
+        guideMenu.classList.remove('cerrando');
+        guideMenu.showModal();
+      });
+
+      guideClose.addEventListener("click", function(){
+        guideMenu.classList.add('cerrando');
+
+        guideMenu.addEventListener('animationend', function handler(e) {
+          if (e.animationName === 'tiendaDesapareciendo') {
+            guideMenu.close();
+            guideMenu.classList.remove('cerrando');
+            guideMenu.removeEventListener('animationend', handler);
+          }
+        });
+      });
+
+      localStorage.setItem('save', JSON.stringify({puntajeMultiplier, prestige, rebirthCounter}));
     </script>
   </body>
 </html>
